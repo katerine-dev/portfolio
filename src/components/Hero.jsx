@@ -41,11 +41,13 @@ const CTA = styled.a`
   font-weight:700;
 `
 
+const perfilPath = `${import.meta.env.BASE_URL}images/perfil.png`
+
 export default function Hero(){
   return (
     <Section id="home" className="container">
       <div>
-        <Photo src="/src/assets/perfil.svg" alt="Katerine profile" />
+       <Photo src={perfilPath} alt="Katerine profile" loading="lazy" />
       </div>
       <div>
         <Title>Desenvolvedora Front-End</Title>
