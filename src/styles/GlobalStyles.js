@@ -3,7 +3,7 @@ import { createGlobalStyle } from 'styled-components'
 const GlobalStyles = createGlobalStyle`
   :root{
     --bg: #fffcef;
-    --accent: #5fc799;
+    --accent: #c92928;
     --text: #0b0b0b;
     --muted: #6b6b6b;
     --card: #ffffff;
