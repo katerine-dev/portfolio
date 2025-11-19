@@ -12,7 +12,6 @@ const Section = styled.section`
     grid-template-columns: 1fr;
     text-align:center;
     gap:16px;
-    margin-bottom:20px;
   }
 `
 

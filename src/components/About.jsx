@@ -1,86 +1,75 @@
-// src/components/About.jsx
 import React from 'react'
 import styled from 'styled-components'
 
 const Section = styled.section`
-  padding: 160px 0 48px;
-  background: transparent;
+  width: 100%;
+  background: #9eb71f;
+  color: #071010; 
+  padding: 64px 0;
 
-  .container-inner {
+  .container-inner{
     width: min(1120px, 92%);
     margin: 0 auto;
     display: grid;
-    /* coluna principal flexível + coluna de infos fixa */
-    grid-template-columns: 1fr 360px;
-    gap: 28px;
-    align-items: start;
+    grid-template-columns: 420px 1fr;
+    gap: 48px;
+    align-items: center;
+  }
 
-    margin-top: 8px;
+  .hero-title{
+    font-weight: 800;
+    font-size: clamp(36px, 6vw, 72px);
+    line-height: 0.92;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    color: #071010;
+  }
+
+  .hero-title .accent {
+    font-style: italic;
+    color: #ffffff;
+    margin-left: 8px;
+    font-weight: 800;
+  }
+
+  .lead {
+    font-size: clamp(18px, 2.2vw, 28px);
+    line-height: 1.3;
+    color: rgba(7,16,16,0.95);
+    margin: 0;
+    max-width: 62ch;
+    font-weight: 600;
   }
 
   @media (max-width: 900px) {
-    padding: 64px 0 32px;
+    padding: 48px 0;
     .container-inner {
       grid-template-columns: 1fr;
-      gap: 16px;
+      gap: 20px;
       text-align: center;
-      margin-top: 0;
     }
-  }
-  .col {
-    min-width: 0;
-  }
-
-  h2 {
-    margin: 0 0 12px 0;
-    font-size: 28px;
-    line-height: 1.05;
-  }
-
-  p {
-    color: var(--muted);
-    line-height: 1.6;
-    margin: 0 0 8px 0;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    color: var(--muted);
-    li { margin-bottom: 8px; }
-  }
-
-  img, figure, .media {
-    max-width: 100%;
-    height: auto;
-    display: block;
+    .hero-title { font-size: clamp(28px, 8vw, 42px); line-height:1; }
+    .hero-title .accent { display:block; margin-left:0; margin-top:6px; color:#fff; }
+    .lead { font-size: 16px; max-width: none; margin: 0 auto; }
   }
 `
 
 export default function About(){
   return (
-    <Section id="about">
+    <Section id="about" aria-label="Sobre mim">
       <div className="container-inner">
-        <div className="col">
-          <h2>Sobre <span style={{fontStyle:'italic', color:'var(--accent)'}}>mim</span></h2>
-          <p>
-            Sou desenvolvedora front-end com formação em Ciência da Computação e formada no profissionalizante em Front-End pela EBAC.
-            Trabalho com React, Vite/Next e já implementei micro-frontends e integrações com Supabase.
-          </p>
-          <p style={{marginTop:12}}>
-            Gosto de transformar requisitos complexos em interfaces claras, performáticas e acessíveis.
-          </p>
+        <div>
+          <h2 className="hero-title">
+            Sobre <span className="accent">mim</span>
+          </h2>
         </div>
 
-        <div className="col">
-          <ul>
-            <li><strong>Local:</strong> Jundiaí / SP</li>
-            <li><strong>Stack:</strong> React · TypeScript · FastAPI · PostgreSQL · Docker · Vite · Next.js · Tailwind · WordPress/Elementor</li>
-            <li><strong>Interesse:</strong> APIs robustas · Performance de backend/frontend · Observabilidade</li>
-          </ul>
+        <div>
+          <p className="lead">
+            Sou desenvolvedora front-end com formação em Ciência da Computação e formação profissional em Front-End pela EBAC.
+            Trabalho com React, TypeScript e ferramentas modernas (Vite / Next) — entrego interfaces performáticas, acessíveis e fáceis de manter.
+          </p>
         </div>
       </div>
     </Section>
