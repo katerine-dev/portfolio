@@ -38,8 +38,11 @@ Olá! Sou a Katerine, desenvolvedora Front‑End focada em React, Vite e Styled 
 **Pré-requisitos:** Node.js (>=18) e npm.
 
 ```bash
-# instalar dependências
-npm install
+# limpar dependências antigas
+rm -rf node_modules
+
+# instalar dependências (usa lockfile se existir)
+npm ci || npm install
 
 # otimizar imagens antes do build (gera AVIF/WEBP/JPEG e backup das originais)
 npm run images:optimize
@@ -48,7 +51,13 @@ npm run images:optimize
 npm run build
 
 # checar build localmente (Vite)
-npm run preview
+npx vite preview --port 4173
+```
+
+Para auditar performance após o preview estar rodando:
+
+```bash
+lighthouse http://localhost:4173 --preset=mobile --output=json --output-path=report.json
 ```
 
 ---
@@ -59,16 +68,20 @@ npm run preview
 ```
 /
 ├─ public/
-│  ├─ images/
-│  │  └─ portfolio-cover.png
+│  ├─ assets/
+│  │  ├─ images/               # versões otimizadas geradas pelo script
+│  │  └─ images-src/           # originais (usados como input)
 │  └─ index.html
+├─ scripts/
+│  └─ optimize-images.mjs      # pipeline AVIF/WEBP/JPEG
 ├─ src/
 │  ├─ assets/
 │  ├─ components/
 │  ├─ data/
 │  ├─ styles/
 │  └─ main.jsx
-├─ .gitignore
+├─ .github/workflows/
+│  └─ optimize-and-deploy.yml
 ├─ package.json
 └─ README.md
 ```

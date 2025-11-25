@@ -2,6 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import { FiArrowUpRight } from 'react-icons/fi'
 import projects from '../data/projects'
+import ResponsiveImage from './ResponsiveImage'
 
 const Section = styled.section`
   padding: 64px 0;
@@ -116,8 +117,6 @@ const IconCircle = styled.a`
   flex:0 0 44px;
 `
 
-const PLACEHOLDER = 'https://via.placeholder.com/1200x900?text=Sem+imagem'
-
 const CenterBtn = styled.div`
   text-align:center;
   margin-top: 24px;
@@ -139,14 +138,15 @@ export default function Projects() {
         <Title id="projects-title">MEUS <span>PROJETOS</span></Title>
 
         <Grid>
-          {projects.map(p => (
+          {projects.map((p) => (
             <Card key={p.id}>
               <ThumbWrap>
-                <img
-                  src={p.img}
+                <ResponsiveImage
+                  fileName={p.imageFileName}
                   alt={p.title}
-                  loading="lazy"
-                  onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = PLACEHOLDER }}
+                  width="960"
+                  height="720"
+                  className="project-image"
                 />
               </ThumbWrap>
 

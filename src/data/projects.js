@@ -1,17 +1,14 @@
-import microcardapio from '../assets/microcardapio.png'
-import todolist from '../assets/todolist.png'
-import pacman from '../assets/pacman.png'
-import queridoDiario from '../assets/queridodiario.png'
 
 const projects = [
   {
     id: 1,
     title: 'MicroCardápio',
     subtitle: 'Book / Micro-frontend',
-    description: 'Projeto de Micro Frontends: Container + Micro Cardápio + Micro Pedido. Integração via events e shared React.',
+    description:
+      'Projeto de Micro Frontends: Container + Micro Cardápio + Micro Pedido. Integração via events e shared React.',
     tech: ['React', 'Module Federation', 'Vite/webpack'],
     repo: 'https://github.com/katerine-dev/MicroCardapio',
-    img: microcardapio
+    imageFileName: 'microcardapio'
   },
   {
     id: 2,
@@ -20,7 +17,7 @@ const projects = [
     description: 'To-do app com estado global via Recoil, filtros e persistência local (LocalStorage).',
     tech: ['React', 'Recoil', 'LocalStorage'],
     repo: 'https://github.com/katerine-dev/TodoListRecoil',
-    img: todolist
+    imageFileName: 'todolist'
   },
   {
     id: 3,
@@ -29,7 +26,7 @@ const projects = [
     description: 'Versão em JS do clássico — exercício de lógica, animação e uso de canvas.',
     tech: ['JavaScript', 'Canvas', 'CSS'],
     repo: 'https://github.com/katerine-dev/PacMan',
-    img: pacman
+    imageFileName: 'pacman'
   },
   {
     id: 4,
@@ -38,7 +35,7 @@ const projects = [
     description: 'App para registro diário com upload de imagens, tags e persistência local.',
     tech: ['React', 'Vite', 'LocalStorage'],
     repo: 'https://github.com/katerine-dev/querido-diario',
-    img: queridoDiario
+    imageFileName: 'queridodiario'
   }
 ]
 

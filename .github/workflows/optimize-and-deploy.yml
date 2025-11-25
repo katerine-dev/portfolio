@@ -1,26 +1,64 @@
-name: build-and-deploy
+name: Optimize images, build and deploy
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup Node
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Detect project directory
+        id: detect
+        run: |
+          ROOT=$(pwd)
+          if [ -f "package.json" ]; then
+            echo "dir=." >> "$GITHUB_OUTPUT"
+          else
+            MATCH=$(find . -maxdepth 3 -name package.json -print -quit)
+            if [ -z "$MATCH" ]; then
+              echo "package.json not found" >&2
+              exit 1
+            fi
+            DIR=$(dirname "$MATCH")
+            echo "dir=$DIR" >> "$GITHUB_OUTPUT"
+          fi
+          echo "Using directory: $(cat $GITHUB_OUTPUT | awk -F= '/dir/ {print $2}')"
+
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: 18
+          cache: npm
+          cache-dependency-path: ${{ steps.detect.outputs.dir }}/package-lock.json
+
+      - name: Install libvips (sharp dependency)
+        run: sudo apt-get update && sudo apt-get install -y libvips-dev
       - name: Install dependencies
-        run: npm ci
+        working-directory: ${{ steps.detect.outputs.dir }}
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
       - name: Optimize images
+        working-directory: ${{ steps.detect.outputs.dir }}
         run: npm run images:optimize
+
       - name: Build
+        working-directory: ${{ steps.detect.outputs.dir }}
         run: npm run build
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: ${{ steps.detect.outputs.dir }}/dist
+          publish_branch: gh-pages

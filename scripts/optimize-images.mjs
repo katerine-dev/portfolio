@@ -1,70 +1,114 @@
 #!/usr/bin/env node
-import fs from 'fs/promises';
-import path from 'path';
-import sharp from 'sharp';
+import fs from 'fs/promises'
+import path from 'path'
+import { fileURLToPath } from 'url'
+import sharp from 'sharp'
 
-const SRC = path.resolve('public/assets/images-src');
-const BACKUP = path.resolve('public/assets/images-src-originals');
-const OUT = path.resolve('public/assets/images');
-const SIZES = [320, 720, 1280];
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
-async function ensureDir(dir){
-  await fs.mkdir(dir, { recursive: true });
+const SRC_DIR = path.resolve(__dirname, '../public/assets/images-src')
+const BACKUP_DIR = path.resolve(__dirname, '../public/assets/images-src-originals')
+const OUT_DIR = path.resolve(__dirname, '../public/assets/images')
+const SIZES = [320, 720, 1280]
+const QUALITY = {
+  avif: 60,
+  webp: 70,
+  jpeg: 75
 }
 
-async function processFile(file){
-  const ext = path.extname(file).toLowerCase();
-  const name = path.basename(file, ext);
-  const infile = path.join(SRC, file);
+async function ensureDir(dir) {
+  await fs.mkdir(dir, { recursive: true })
+}
 
-  // backup original
-  await fs.copyFile(infile, path.join(BACKUP, file));
-
-  const image = sharp(infile).rotate(); // treat EXIF
-
-  for (const w of SIZES){
-    // avif
-    await image.clone().resize({ width: w }).avif({ quality: 60 }).toFile(path.join(OUT, `${name}-${w}.avif`));
-    // webp
-    await image.clone().resize({ width: w }).webp({ quality: 70 }).toFile(path.join(OUT, `${name}-${w}.webp`));
-    // jpg
-    await image.clone().resize({ width: w }).jpeg({ quality: 75 }).toFile(path.join(OUT, `${name}-${w}.jpg`));
+async function getFiles() {
+  try {
+    const entries = await fs.readdir(SRC_DIR, { withFileTypes: true })
+    return entries.filter((e) => e.isFile()).map((e) => e.name)
+  } catch (err) {
+    if (err.code === 'ENOENT') return []
+    throw err
   }
 }
 
-async function main(){
-  await ensureDir(SRC);
-  await ensureDir(BACKUP);
-  await ensureDir(OUT);
+async function backupOriginal(file) {
+  const srcPath = path.join(SRC_DIR, file)
+  const backupPath = path.join(BACKUP_DIR, file)
+  await fs.copyFile(srcPath, backupPath)
+}
 
-  const files = await fs.readdir(SRC).catch(()=>[]);
-  if (!files.length){
-    console.log('No files found in', SRC);
-    process.exit(0);
+async function generateVariants(file) {
+  const ext = path.extname(file)
+  const name = path.basename(file, ext)
+  const inputPath = path.join(SRC_DIR, file)
+
+  const image = sharp(inputPath).rotate()
+
+  for (const width of SIZES) {
+    await image
+      .clone()
+      .resize({ width, withoutEnlargement: true })
+      .avif({ quality: QUALITY.avif })
+      .toFile(path.join(OUT_DIR, `${name}-${width}.avif`))
+
+    await image
+      .clone()
+      .resize({ width, withoutEnlargement: true })
+      .webp({ quality: QUALITY.webp })
+      .toFile(path.join(OUT_DIR, `${name}-${width}.webp`))
+
+    await image
+      .clone()
+      .resize({ width, withoutEnlargement: true })
+      .jpeg({ quality: QUALITY.jpeg })
+      .toFile(path.join(OUT_DIR, `${name}-${width}.jpg`))
   }
+}
 
-  let before = 0, after = 0;
-  for (const f of files){
-    const stat = await fs.stat(path.join(SRC, f));
-    before += stat.size;
-    await processFile(f);
-    // sum generated outputs
-    for (const w of SIZES){
-      for (const ext of ['.avif','.webp','.jpg']){
-        const outFile = path.join(OUT, `${path.basename(f, path.extname(f))}-${w}${ext}`);
-        const s = await fs.stat(outFile);
-        after += s.size;
+async function summarize(files) {
+  let originals = 0
+  let outputs = 0
+
+  for (const file of files) {
+    const originalStat = await fs.stat(path.join(SRC_DIR, file))
+    originals += originalStat.size
+
+    for (const width of SIZES) {
+      for (const ext of ['avif', 'webp', 'jpg']) {
+        const outFile = path.join(OUT_DIR, `${path.basename(file, path.extname(file))}-${width}.${ext}`)
+        const outStat = await fs.stat(outFile)
+        outputs += outStat.size
       }
     }
   }
 
-  console.log(`Processed ${files.length} files`);
-  console.log(`Size before: ${(before/1024).toFixed(1)} KiB`);
-  console.log(`Size after (generated variants): ${(after/1024).toFixed(1)} KiB`);
-  console.log(`Saved approximately: ${((before - after)/1024).toFixed(1)} KiB (note: after counts all variants)`);
+  const kb = (n) => (n / 1024).toFixed(1)
+  const saving = originals - outputs
+
+  console.log(`Processed ${files.length} file(s).`)
+  console.log(`Originals total: ${kb(originals)} KiB`)
+  console.log(`Generated variants total: ${kb(outputs)} KiB`)
+  console.log(`Approx. delta (original vs generated set): ${kb(saving)} KiB`)
 }
 
-main().catch(err=>{
-  console.error(err);
-  process.exit(1);
-});
+async function main() {
+  await Promise.all([ensureDir(SRC_DIR), ensureDir(BACKUP_DIR), ensureDir(OUT_DIR)])
+
+  const files = await getFiles()
+  if (!files.length) {
+    console.log(`No source images found in ${SRC_DIR}. Add files and re-run.`)
+    return
+  }
+
+  for (const file of files) {
+    await backupOriginal(file)
+    await generateVariants(file)
+  }
+
+  await summarize(files)
+}
+
+main().catch((err) => {
+  console.error(err)
+  process.exit(1)
+})
