@@ -34,7 +34,7 @@ const projects = [
     subtitle: 'Web App / Diário',
     description: 'App para registro diário com upload de imagens, tags e persistência local.',
     tech: ['React', 'Vite', 'LocalStorage'],
-    repo: 'https://github.com/katerine-dev/querido-diario',
+    repo: 'https://github.com/katerine-dev/queridodiario',
     imageFileName: 'queridodiario'
   }
 ]
