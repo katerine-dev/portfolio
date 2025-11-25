@@ -46,7 +46,7 @@ export default function Hero(){
   return (
     <Section id="home" className="container">
       <Photo>
-        <ResponsiveImage fileName="hero" alt="Katerine profile" width={1280} height={1280} priority />
+        <ResponsiveImage fileName="hero" alt="Katerine profile" priority width="720" height="480" />
       </Photo>
       <div>
         <Title>Desenvolvedora Front-End</Title>
