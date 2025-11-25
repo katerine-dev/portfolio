@@ -3,8 +3,7 @@
 Meu portfólio pessoal com projetos, habilidades e formas de contato.
 
 ## Demo
-[Acesse aqui](
-https://katerine-dev.github.io/portfolio/)
+[Acesse aqui](https://katerine-dev.github.io/portfolio/)
 
 ---
 
@@ -14,42 +13,36 @@ https://katerine-dev.github.io/portfolio/)
 
 
 ## Sobre
-Olá — sou a Katerine, desenvolvedora Front‑End focada em React, Vite e Tailwind. Aqui mostro projetos reais, código e deploys. Estou aberta a oportunidades remotas e colaborações.
+Olá! Sou a Katerine, desenvolvedora Front‑End focada em React, Vite e Styled Components. Aqui mostro projetos reais, código e deploys. Estou aberta a oportunidades remotas e colaborações.
 
 ---
 
 ## Funcionalidades
 - Página inicial com resumo e foto pessoal.
 - Seção **Projetos** com descrição, tecnologias e links (GitHub / Demo).
-- Seção **Habilidades** com principais stacks (React, TypeScript, Tailwind, etc).
-- Formulário de contato ou links para LinkedIn / e-mail.
+- Seção **Habilidades** com principais stacks (React, Styled Components, etc).
 - Responsividade para mobile e desktop.
 
 ---
 
 ## Tecnologias
-- React (Vite / Create React App)
-- Styled Components / Tailwind CSS (conforme projeto)
-- JavaScript / TypeScript
-- Git / GitHub
-- (Opcional) Netlify / Vercel / GitHub Pages para deploy
+- React + Vite
+- Styled Components
+- JavaScript / ES Modules
+- Git / GitHub Pages
 
 ---
 
 ## Como rodar localmente
 
-**Pré-requisitos:** Node.js (>=16), npm ou Yarn
+**Pré-requisitos:** Node.js (>=18) e npm.
 
 ```bash
 # instalar dependências
 npm install
-# ou
-yarn
 
-# rodar em modo desenvolvimento (Vite)
-npm run dev
-# ou (Create React App)
-npm start
+# otimizar imagens antes do build (gera AVIF/WEBP/JPEG e backup das originais)
+npm run images:optimize
 
 # build de produção
 npm run build
@@ -71,12 +64,17 @@ npm run preview
 │  └─ index.html
 ├─ src/
 │  ├─ assets/
-imagens dentro do app
 │  ├─ components/
-│  ├─ pages/
+│  ├─ data/
 │  ├─ styles/
 │  └─ main.jsx
 ├─ .gitignore
 ├─ package.json
 └─ README.md
 ```
+
+---
+
+## Deploy
+- O deploy automático roda no push para `main` via workflow `optimize-and-deploy.yml`, publicando em `gh-pages`.
+- Para headers de cache imutáveis em plataformas como Netlify, veja `docs/DEPLOY.md`.

@@ -1,5 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
+import ResponsiveImage from './ResponsiveImage'
 
 const Section = styled.section`
   padding: 56px 0;
@@ -15,7 +16,7 @@ const Section = styled.section`
   }
 `
 
-const Photo = styled.img`
+const Photo = styled.div`
   width:100%;
   max-width:520px;
   margin:0 auto;
@@ -41,14 +42,12 @@ const CTA = styled.a`
   font-weight:700;
 `
 
-const perfilPath = `${import.meta.env.BASE_URL}images/perfil.png`
-
 export default function Hero(){
   return (
     <Section id="home" className="container">
-      <div>
-       <Photo src={perfilPath} alt="Katerine profile" loading="lazy" />
-      </div>
+      <Photo>
+        <ResponsiveImage fileName="hero" alt="Katerine profile" width={1280} height={1280} priority />
+      </Photo>
       <div>
         <Title>Desenvolvedora Front-End</Title>
         <Desc>Crio interfaces limpas, acessíveis e com foco em performance — React, hooks, componentes reusáveis e atenção aos detalhes.</Desc>
