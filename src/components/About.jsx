@@ -67,8 +67,10 @@ export default function About(){
 
         <div>
           <p className="lead">
-            Sou desenvolvedora front-end com formação em Ciência da Computação e formação profissional em Front-End pela EBAC.
-            Trabalho com React, TypeScript e ferramentas modernas (Vite / Next) — entrego interfaces performáticas, acessíveis e fáceis de manter.
+            Sou desenvolvedora front-end, formada em Ciência da Computação e Front-End pela EBAC. 
+            Trabalho com React, TypeScript e ferramentas modernas (Vite / Next), entregando interfaces performáticas, acessíveis e fáceis de manter. 
+            Na minha última experiência atuei do protótipo à produção em projetos como PWAs, CRMs/ERPs e sites WordPress/Elementor, 
+            criando componentes reutilizáveis, integrações com APIs e pipelines de CI/CD.
           </p>
         </div>
       </div>

@@ -16,7 +16,7 @@ const projects = [
     subtitle: 'Productivity / To-do app',
     description: 'To-do app com estado global via Recoil, filtros e persistência local (LocalStorage).',
     tech: ['React', 'Recoil', 'LocalStorage'],
-    repo: 'https://github.com/katerine-dev/TodoListRecoil',
+    repo: 'https://katerine-dev.github.io/TodoListRecoil/',
     imageFileName: 'todolist'
   },
   {
@@ -25,7 +25,7 @@ const projects = [
     subtitle: 'Game / Canvas demo',
     description: 'Versão em JS do clássico — exercício de lógica, animação e uso de canvas.',
     tech: ['JavaScript', 'Canvas', 'CSS'],
-    repo: 'https://github.com/katerine-dev/PacMan',
+    repo: 'https://katerine-dev.github.io/PacMan/',
     imageFileName: 'pacman'
   },
   {
@@ -33,7 +33,7 @@ const projects = [
     title: 'Querido Diário',
     subtitle: 'Web App / Diário',
     description: 'App para registro diário com upload de imagens, tags e persistência local.',
-    tech: ['React', 'Vite', 'LocalStorage'],
+    tech: ['R'],
     repo: 'https://github.com/katerine-dev/queridodiario',
     imageFileName: 'queridodiario'
   }
